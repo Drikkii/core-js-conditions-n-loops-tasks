@@ -21,10 +21,9 @@
  *  0  => true
  *  -5 => false
  */
-function isPositive(/* number */) {
-  throw new Error('Not implemented');
+function isPositive(number) {
+  return number >= 0;
 }
-
 /**
  * Returns the maximum of three numbers without using Array and Math classes methods.
  *
