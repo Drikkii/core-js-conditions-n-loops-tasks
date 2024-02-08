@@ -269,9 +269,7 @@ function getIndexOf(str, letter) {
 function isContainNumber(num, digit) {
   const str = String(num);
   for (let i = 0; i < str.length; i += 1) {
-    if (+str[i] === digit) {
-      return true;
-    }
+    if (+str[i] === digit) return true;
   }
   return false;
 }
@@ -289,7 +287,23 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(arr) {}
+function getBalanceIndex(arr) {
+  const len = arr.length;
+  for (let i = 1; i < len - 1; i += 1) {
+    let left = 0;
+    let right = 0;
+    for (let j = 0; j < i; j += 1) {
+      left += arr[j];
+    }
+    for (let k = i + 1; k < len; k += 1) {
+      right += arr[k];
+    }
+    if (left === right) {
+      return i;
+    }
+  }
+  return -1;
+}
 
 /**
  * Generates a spiral matrix of a given size, filled with numbers in ascending order starting from one.
@@ -331,8 +345,19 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const n = matrix;
+  const len = matrix.length;
+  for (let i = 0; i < len / 2; i += 1) {
+    for (let j = i; j < len - i - 1; j += 1) {
+      const matr = n[i][j];
+      n[i][j] = n[len - j - 1][i];
+      n[len - j - 1][i] = n[len - i - 1][len - j - 1];
+      n[len - i - 1][len - j - 1] = n[j][len - i - 1];
+      n[j][len - i - 1] = matr;
+    }
+  }
+  return matrix;
 }
 
 /**
@@ -349,8 +374,39 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const arr1 = arr;
+
+  function run(arr2, min, max) {
+    const arr3 = arr2;
+    const arMax = arr3[max];
+    let i = min - 1;
+
+    for (let j = min; j < max; j += 1) {
+      if (arr1[j] <= arMax) {
+        i += 1;
+        const temp = arr3[i];
+        arr3[i] = arr3[j];
+        arr3[j] = temp;
+      }
+    }
+
+    const temp = arr1[i + 1];
+    arr3[i + 1] = arr3[max];
+    arr3[max] = temp;
+
+    return i + 1;
+  }
+
+  function sorted(arr4, min, max) {
+    if (min < max) {
+      const run1 = run(arr4, min, max);
+      sorted(arr4, min, run1 - 1);
+      sorted(arr4, run1 + 1, max);
+    }
+  }
+
+  sorted(arr1, 0, arr1.length - 1);
 }
 
 /**
