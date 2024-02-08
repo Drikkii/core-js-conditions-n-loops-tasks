@@ -326,8 +326,39 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const finishMatrix = [];
+  for (let i = 0; i < size; i += 1) {
+    finishMatrix[i] = [];
+  }
+  let startMatrixRow = 0;
+  let endMatrixRow = size - 1;
+  let startMatrixCol = 0;
+  let endMatrixCol = size - 1;
+  let value = 1;
+  while (startMatrixRow <= endMatrixRow && startMatrixCol <= endMatrixCol) {
+    for (let i = startMatrixCol; i <= endMatrixCol; i += 1) {
+      finishMatrix[startMatrixRow][i] = value;
+      value += 1;
+    }
+    startMatrixRow += 1;
+    for (let i = startMatrixRow; i <= endMatrixRow; i += 1) {
+      finishMatrix[i][endMatrixCol] = value;
+      value += 1;
+    }
+    endMatrixCol -= 1;
+    for (let i = endMatrixCol; i >= startMatrixCol; i -= 1) {
+      finishMatrix[endMatrixRow][i] = value;
+      value += 1;
+    }
+    endMatrixRow -= 1;
+    for (let i = endMatrixRow; i >= startMatrixRow; i -= 1) {
+      finishMatrix[i][startMatrixCol] = value;
+      value += 1;
+    }
+    startMatrixCol += 1;
+  }
+  return finishMatrix;
 }
 
 /**
@@ -426,8 +457,24 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = str;
+  let count = 1;
+  while (count <= iterations) {
+    let left = '';
+    let right = '';
+    for (let i = 0; i < result.length; i += 1) {
+      if (i % 2 === 0) {
+        right += result[i];
+      } else {
+        left += result[i];
+      }
+    }
+    result = right + left;
+    if (result === str) return shuffleChar(str, iterations % count);
+    count += 1;
+  }
+  return result;
 }
 
 /**
